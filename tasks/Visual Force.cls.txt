@@ -1,30 +1,35 @@
-================VF Page==========
-
-//Visual force page to showing data form Controller
 <apex:page standardController="Account" extensions="AccountDemoController" sidebar="false">
     <apex:form >
-        <apex:pageBlock >
+        <apex:pageBlock id="pg">
         <img src="https://www.channelweb.co.uk/w-images/d282f464-05ec-459d-b273-b1fd3904c60d/0/salesforcecloudrevenueprofitcrm-230x142.jpg" height="50px" width="150px" />
             <apex:outputPanel style="margin-left:500px;">
                 <span style="margin-right:0px;">Welcome to page!! you are seeing account related opportunnity </span>
             </apex:outputPanel>
+        <apex:actionFunction id="views" name="views" action="{!view}" reRender="out" >
+          <apex:param name="arg2" value="" assignTo="{!oppObj}" />          
+      </apex:actionFunction>
+      <apex:actionFunction id="remove" name="remove" action="{!remove}" reRender="pg" >
+          <apex:param name="arg" value="" assignTo="{!conId}" />          
+      </apex:actionFunction>             
         <apex:pageBlockSection collapsible="true" title="Opportunity Record">
-            <apex:repeat value="{!accList}" var="acc">
-                <apex:outputField value="{!acc.OwnerId}"/>  
-                <apex:outputField value="{!acc.AccountNumber}"/>
-                <apex:outputField value="{!acc.name}"/> 
-                <apex:outputField value="{!acc.phone}"/>   
-                <apex:outputField value="{!acc.AccountNumber}"/>    
-                <apex:outputField value="{!acc.AnnualRevenue}"/> 
-                    <apex:pageBlockTable value="{!acc.opportunities}" var="a" title="Opportunity Data">
+            <apex:repeat value="{!accList}" var="acc" id="out">
+                <apex:outputField value="{!acc.OwnerId}"/>
+                <apex:outputField value="{!acc.BillingCountry}"/>  
+                <apex:outputField value="{!acc.name}"/>
+                <apex:outputField value="{!acc.phone}"/>
+                <apex:outputField value="{!acc.AccountNumber}"/> 
+                <apex:outputField value="{!acc.AnnualRevenue}"/>   
+                    <apex:pageBlockTable value="{!acc.opportunities}" var="a" title="Opportunity Data" >
                         <apex:column headerValue="Opportunity Name" ><apex:outputField value="{!a.Name}"/></apex:column>
                         <apex:column headerValue="Type"><apex:outputField value="{!a.Type}"/></apex:column>
                         <apex:column headerValue="Amount"> <apex:outputField value="{!a.Amount}"/></apex:column>
                         <apex:column headerValue="Stage"><apex:outputField value="{!a.StageName}"/></apex:column>
+                        <apex:column headerValue="View Opportunity"><apex:commandLink value="View" onClick="views('{!a.Id}'); return false;"/></apex:column>
+                        <apex:column headerValue="Delete Record"><apex:commandLink value="Delete" onClick="remove('{!a.Id}'); return false;" />
+                        </apex:column>
                     </apex:pageBlockTable>  
                 </apex:repeat>
             </apex:pageBlockSection>
         </apex:pageBlock>
     </apex:form>
 </apex:page>
-

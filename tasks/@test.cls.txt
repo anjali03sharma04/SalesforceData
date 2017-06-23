@@ -1,6 +1,3 @@
-=============@testClass===========
-
-// Test class for AccountDemoController
 @isTest
 public class AccountDemoControllerTest {
     
@@ -12,6 +9,11 @@ public class AccountDemoControllerTest {
         insert acc;
         ApexPages.StandardController sc = new ApexPages.StandardController(acc);
         AccountDemoController adc = new AccountDemoController(sc);
+        adc.conId = acc.id;
+        adc.remove();
+        adc.oppObj = null;
+        test.stopTest();
+        adc.view();
         test.stopTest();
     }
 }
