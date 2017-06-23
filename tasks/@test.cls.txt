@@ -1,0 +1,17 @@
+=============@testClass===========
+
+// Test class for AccountDemoController
+@isTest
+public class AccountDemoControllerTest {
+    
+    @isTest
+    public static void myTest(){
+        test.startTest();
+        Account acc = new Account();
+        acc.name = 'test';
+        insert acc;
+        ApexPages.StandardController sc = new ApexPages.StandardController(acc);
+        AccountDemoController adc = new AccountDemoController(sc);
+        test.stopTest();
+    }
+}

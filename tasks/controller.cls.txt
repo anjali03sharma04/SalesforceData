@@ -1,0 +1,16 @@
+===========Controller===========
+
+// Creating a class for showing particular account detail and is related Opportunity.
+public class AccountDemoController{
+    public String recordId{get;set;}
+   //List for taking multiple values of opportunity
+    public List<Account> accList{get;set;} 
+    
+   //Constructor
+    public AccountDemoController(ApexPages.StandardController sc){
+        recordId = sc.getRecord().id;
+        if(recordId != null){
+            accList = new List<Account>( [SELECT id, name, BillingAddress, AccountNumber,AnnualRevenue, phone, BillingState, BillingCountry, BillingPostalCode, Billingcity, OwnerId, CreatedBy.Name,(Select id,Name,Type,Amount,StageName from opportunities) From Account Where id =: recordId]);
+        }
+    } 
+}
