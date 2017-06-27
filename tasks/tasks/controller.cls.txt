@@ -1,0 +1,41 @@
+public class AccountDemoController{
+    public String recordId{get;set;}
+    public List<Account> accList{get;set;}
+    public id oppObj{get;set;}
+    public id conId{get;set;}
+    
+    public AccountDemoController(ApexPages.StandardController sc){
+        recordId = sc.getRecord().id;
+        if(recordId != null){
+            accList = new List<Account>( [SELECT id, name, BillingAddress, AccountNumber,AnnualRevenue, phone, BillingState, BillingCountry, BillingPostalCode, Billingcity, OwnerId, CreatedBy.Name,(Select id,Name,Type,Amount,StageName from opportunities) From Account Where id =: recordId]);
+        }
+    }
+    
+    public pageReference view(){
+        PageReference pg = new pageReference('/'+oppObj);
+        pg.setRedirect(true);
+        return pg;           
+    }
+    
+    public PageReference remove(){
+    integer index = 0;
+    Opportunity c = null;
+    for(Account ac : accList){
+        List<Opportunity> oppList = new List<Opportunity>();
+        oppList = ac.getSObjects('Opportunities');
+        for(Opportunity opt : oppList){
+            if(opt.Id == conId){
+               c = oppList.get(index);
+               break;
+            }
+        }
+        index++;
+    }
+    if (c != null)
+        delete c;
+        //accList = new List<Account>( [SELECT id, name, BillingAddress, AccountNumber,AnnualRevenue, phone, BillingState, BillingCountry, BillingPostalCode, Billingcity, OwnerId, CreatedBy.Name,(Select id,Name,Type,Amount,StageName from opportunities) From Account Where id =: recordId]);  
+        PageReference pg = new pageReference('/apex/AccountDemoController?id=' + recordId );
+        pg.setRedirect(true);
+        return pg;        
+    }
+}
