@@ -4,15 +4,22 @@ public class AccountDemoControllerTest {
     @isTest
     public static void myTest(){
         test.startTest();
+        pageReference pg = Page.AccountDemoController;
         Account acc = new Account();
         acc.name = 'test';
         insert acc;
+        Opportunity opp = new Opportunity();
+        opp.Name = 'test';
+        opp.CloseDate = Date.newInstance(2017, 4, 3);
+        opp.StageName = 'Closed Won';
+        opp.AccountId = acc.Id;
+        insert opp;
+        test.setCurrentPage(pg);
+        pg.getParameters().put('id',opp.Id);
         ApexPages.StandardController sc = new ApexPages.StandardController(acc);
         AccountDemoController adc = new AccountDemoController(sc);
         adc.conId = acc.id;
         adc.remove();
-        adc.oppObj = null;
-        test.stopTest();
         adc.view();
         test.stopTest();
     }
